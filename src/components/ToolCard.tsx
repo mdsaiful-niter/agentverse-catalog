@@ -1,6 +1,7 @@
-import { ExternalLink, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Agent } from "@/data/agents";
+import { getFaviconUrl } from "@/data/agents";
 import { cn } from "@/lib/utils";
 
 interface ToolCardProps {
@@ -18,17 +19,28 @@ const pricingStyles: Record<string, string> = {
 
 const ToolCard = ({ agent, index, isBookmarked, onToggleBookmark }: ToolCardProps) => {
   return (
-    <motion.div
+    <motion.a
+      href={agent.website}
+      target="_blank"
+      rel="noopener noreferrer"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.03 }}
-      className="glass-card rounded-xl p-5 group hover:-translate-y-1 hover:border-secondary/50 hover:shadow-[0_0_20px_hsl(187_94%_43%/0.15)] transition-all duration-200 flex flex-col"
+      className="glass-card rounded-xl p-5 group hover:-translate-y-1 hover:border-secondary/50 hover:shadow-[0_0_20px_hsl(187_94%_43%/0.15)] transition-all duration-200 flex flex-col cursor-pointer"
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center text-2xl">
-            {agent.emoji}
+          <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center overflow-hidden">
+            <img
+              src={getFaviconUrl(agent.website)}
+              alt={`${agent.name} logo`}
+              className="w-8 h-8 object-contain"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+                (e.target as HTMLImageElement).parentElement!.innerHTML = `<span class="text-2xl">${agent.emoji}</span>`;
+              }}
+            />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-bold text-foreground text-base truncate">{agent.name}</h3>
@@ -40,7 +52,11 @@ const ToolCard = ({ agent, index, isBookmarked, onToggleBookmark }: ToolCardProp
             {agent.pricing}
           </span>
           <button
-            onClick={() => onToggleBookmark(agent.id)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onToggleBookmark(agent.id);
+            }}
             className="p-1 rounded-md hover:bg-muted transition-colors"
           >
             <Star
@@ -76,16 +92,10 @@ const ToolCard = ({ agent, index, isBookmarked, onToggleBookmark }: ToolCardProp
       </div>
 
       {/* Footer */}
-      <a
-        href={agent.website}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-secondary transition-colors group/link"
-      >
-        Visit Site
-        <ExternalLink className="h-3.5 w-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-      </a>
-    </motion.div>
+      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground group-hover:text-secondary transition-colors">
+        Visit Site →
+      </span>
+    </motion.a>
   );
 };
 
