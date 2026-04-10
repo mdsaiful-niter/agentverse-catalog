@@ -30,7 +30,7 @@ const HeroSection = ({ searchQuery, onSearchChange, toolCount }: HeroSectionProp
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-lg md:text-xl text-muted-foreground mb-6"
         >
-          Discover {toolCount}+ Agentic AI Tools — All in One Place
+          Discover {toolCount} Agentic AI Tools — All in One Place
         </motion.p>
 
         <motion.div
@@ -40,10 +40,10 @@ const HeroSection = ({ searchQuery, onSearchChange, toolCount }: HeroSectionProp
           className="flex items-center justify-center gap-3 mb-8"
         >
           <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-primary/20 text-primary border border-primary/30">
-            {toolCount}+ Tools
+            {toolCount} Tools
           </span>
           <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-secondary/20 text-secondary border border-secondary/30">
-            8 Categories
+            11 Categories
           </span>
           <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-muted text-muted-foreground border border-border">
             Updated 2025
